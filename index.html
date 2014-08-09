@@ -8,7 +8,7 @@
     <style>
         .codepanel {
             padding: 16px;
-            margin-bottom: 0px;
+            margin-bottom: 0;
             overflow: auto;
             line-height: 1.45;
             background-color: #F7F7F7;
@@ -31,7 +31,7 @@
                 <h2>Example</h2>
 
                 <label for="bitmazk-projects">Bitmazk Projects
-                    <input id="bitmazk-projects" class="example-input" data-class="taginput" value="django-libs,django-multilingual-news">
+                    <input id="bitmazk-projects" class="example-input" data-class="taginput" value="django-libs,django-multilingual-news" />
                 </label>
 
                 <h2>Usage</h2>
@@ -44,12 +44,18 @@
 
                 <p>
                     <pre class="codepanel">
-// The source of the tags for autocompletion
-var tagsource = ['Foo', 'Bar', 'Anoter Tag', 'Even more tags',
-                 'Such autocomplete', 'Many tags', 'Wow'];
+                        // The source of the tags for autocompletion
+                        var tagsource = [
+                            'django-libs', 'django-multilingual-news',
+                            'jquery-typeahead-tagging', 'django-multilingual-tags',
+                            'django-forms-ajaxified', 'django-project-template',
+                            'django-development-fabfile', 'django-user-media',
+                            'django-feedback-form', 'django-review', 'django-hero-slider',
+                            'django-document-library', 'django-paypal-express-checkout'
+                        ];
 
-// Turn the input into the tagging input
-$('#taginput').tagging(tagsource);
+                        // Turn the input into the tagging input
+                        $('#taginput').tagging(tagsource);
                     </pre>
                 </p>
             </div>
@@ -63,13 +69,12 @@ $('#taginput').tagging(tagsource);
         // The source of the tags for autocompletion
         var tagsource = [
             'django-libs', 'django-multilingual-news',
-            'jquert-typeahead-tagging', 'django-multilingual-tags',
+            'jquery-typeahead-tagging', 'django-multilingual-tags',
             'django-forms-ajaxified', 'django-project-template',
             'django-development-fabfile', 'django-user-media',
             'django-feedback-form', 'django-review', 'django-hero-slider',
             'django-document-library', 'django-paypal-express-checkout'
-        ]
-
+        ];
 
         // Turn the input into the tagging input
         $('[data-class="taginput"]').tagging(tagsource);
