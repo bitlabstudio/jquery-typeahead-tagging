@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Typeahead Tagging</title>
+    <meta charset="utf-8" />
+    <link href="css/typeahead.tagging.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .codepanel {
+            padding: 16px;
+            margin-bottom: 0px;
+            overflow: auto;
+            line-height: 1.45;
+            background-color: #F7F7F7;
+            border-radius: 3px;
+            border: 1px solid #EEEEEE;
+        }
+        .tagging_ul {
+            width: 800px !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"></div>
+                <h1>jQuery Typeahead Tagging</h1>
+                <p>A jQuery plugin to turn a regular input into a tag input with typeahead autocompletion.</p>
+
+                <h2>Example</h2>
+
+                <label for="bitmazk-projects">Bitmazk Projects
+                    <input id="bitmazk-projects" class="example-input" data-class="taginput" value="django-libs,django-multilingual-news">
+                </label>
+
+                <h2>Usage</h2>
+
+                <p>You need a regular text input.</p>
+
+                <p><pre class="codepanel">&lt;input type="text" id="taginput" value=""&gt;</pre></p>
+
+                <p>And then you initialize the script.</p>
+
+                <p>
+                    <pre class="codepanel">
+// The source of the tags for autocompletion
+var tagsource = ['Foo', 'Bar', 'Anoter Tag', 'Even more tags',
+                 'Such autocomplete', 'Many tags', 'Wow'];
+
+// Turn the input into the tagging input
+$('#taginput').tagging(tagsource);
+                    </pre>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="js/libs/typeahead.bundle.min.js"></script>
+    <script src="js/typeahead.tagging.js"></script>
+    <script>
+        // The source of the tags for autocompletion
+        var tagsource = ['Foo', 'Bar', 'Anoter Tag', 'Even more tags',
+                        'Such autocomplete', 'Many tags', 'Wow'];
+
+        // Turn the input into the tagging input
+        $('[data-class="taginput"]').tagging(tagsource);
+    </script>
+</body>
+</html>
