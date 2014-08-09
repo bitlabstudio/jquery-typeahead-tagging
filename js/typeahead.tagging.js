@@ -7,6 +7,7 @@
  *
  * Current issues/TODO:
  *  - prevent already added tags from showing up in the autocomplete results
+ *  - prevent umlauts from being cleaned out
  *
  */
 (function( $ ) {
@@ -16,6 +17,7 @@
         , TAG_DELETE: '<span class="tag_delete">x</span>'
         , $TAGGING_NEW: $(
             '<li class="tagging_new"><input type="text" class="tagging_new_input" /></li>')
+        , CLEANING_PATTERN: /[^\w\s-]+/g
     };
 
     // Plugin Methods =========================================================
@@ -48,7 +50,7 @@
         // create a new tag from the input's value and insert it before the
         // input's parent li
         var $new_tag = $.tagging.$TAGGING_TAG.clone()
-          , value = $input.val().replace(/[^\w\s-]+/g,'').trim();
+          , value = $input.val().replace($.tagging.CLEANING_PATTERN, '').trim();
 
         $new_tag.html(value + $.tagging.TAG_DELETE);
         $new_tag.insertBefore($input.parents('li'));
@@ -61,7 +63,7 @@
         // append a new li to the tagging ul element with an input to add new
         // tags
         $element.append($tagging_new);
-
+/[^\w\s-]+/g
         // init typeahead
         init_typeahead($element.find('input.tagging_new_input'), tagsource,
                        datasetname);
@@ -79,7 +81,7 @@
         // fill the ul with li containing the tag names
         for (var i=0; i<tags.length; i++) {
             $tagging_tag = $.tagging.$TAGGING_TAG.clone();
-            value = tags[i].replace(/[^\w\s-]+/g,'').trim();
+            value = tags[i].replace($.tagging.CLEANING_PATTERN, '').trim();
             $tagging_tag.html(value + $.tagging.TAG_DELETE);
             $tagging_ul.append($tagging_tag);
             $.tagging.current_taglist.push(value);
