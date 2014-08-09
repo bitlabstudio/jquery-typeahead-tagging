@@ -24,6 +24,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12"></div>
+                <a href="https://github.com/bitmazk/jquery-typeahead-tagging">&#8592; Back to the repository</a>
                 <h1>jQuery Typeahead Tagging</h1>
                 <p>A jQuery plugin to turn a regular input into a tag input with typeahead autocompletion.</p>
 
@@ -60,8 +61,15 @@ $('#taginput').tagging(tagsource);
     <script src="js/typeahead.tagging.js"></script>
     <script>
         // The source of the tags for autocompletion
-        var tagsource = ['Foo', 'Bar', 'Anoter Tag', 'Even more tags',
-                        'Such autocomplete', 'Many tags', 'Wow'];
+        var tagsource = [
+            'django-libs', 'django-multilingual-news',
+            'jquert-typeahead-tagging', 'django-multilingual-tags',
+            'django-forms-ajaxified', 'django-project-template',
+            'django-development-fabfile', 'django-user-media',
+            'django-feedback-form', 'django-review', 'django-hero-slider',
+            'django-document-library', 'django-paypal-express-checkout'
+        ]
+
 
         // Turn the input into the tagging input
         $('[data-class="taginput"]').tagging(tagsource);
