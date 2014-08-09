@@ -1,0 +1,60 @@
+@tag-height:        28px;
+@tag-bg-color:      #6caec9;
+@tag-border-color:  darken(#6caec9, 20%);
+@tag-color:         #ffffff;
+
+ul.tagging_ul {
+    // bootstrap 3 text input styles
+    background-color: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #cccccc;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    display: block;
+    height: inherit;
+    list-style: none;
+    padding: 6px 12px;
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    width: 100%;
+    li {
+        margin-right: 5px;
+        margin-top: 5px;
+        white-space: nowrap;
+    }
+    li.tagging_tag {
+        background-color: @tag-bg-color;
+        border-radius: @tag-height * 0.2;
+        border: 1px solid @tag-border-color;
+        color: @tag-color;
+        display: inline-block;
+        height: @tag-height;
+        padding: @tag-height * 0.1;
+        padding-left: @tag-height * 0.3;
+        padding-right: @tag-height * 0.2;
+        span.tag_delete {
+            color: @tag-border-color;
+            margin-left: @tag-height * 0.2;
+            cursor: pointer;
+        }
+        span.tag_delete:hover {
+            color: lighten(@tag-border-color, 50%)
+        }
+    }
+    li.tagging_new {
+        display: inline-block;
+        height: @tag-height;
+        margin-left: 0;
+        max-width: 200px;
+        input.tagging_new_input {
+            border: none;
+            box-shadow: none;
+            display: inline;
+            height: inherit;
+            padding-bottom: 0;
+            padding-top: 0;
+            max-width: inherit;
+        }
+    }
+}
