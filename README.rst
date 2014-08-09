@@ -4,6 +4,9 @@ jQuery Typeahead Tagging
 A jQuery plugin to turn a regular input into a tag input with typeahead
 autocompletion.
 
+Check the example at `the project page
+<https://bitmazk.github.io/jquery-typeahead-tagging/>`_.
+
 Usage
 -----
 
