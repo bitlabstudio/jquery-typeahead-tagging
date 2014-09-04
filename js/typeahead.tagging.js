@@ -63,7 +63,6 @@
         // append a new li to the tagging ul element with an input to add new
         // tags
         $element.append($tagging_new);
-/[^\w\s-]+/g
         // init typeahead
         init_typeahead($element.find('input.tagging_new_input'), tagsource,
                        datasetname);
