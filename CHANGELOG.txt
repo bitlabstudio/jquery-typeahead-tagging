@@ -1,5 +1,9 @@
 === ongoing ===
 
+
+=== 0.2. ===
+
+- allowing to limit maximum tags
 - preventing empty tags from pressing comma or enter
 - fixed copy paste error
 

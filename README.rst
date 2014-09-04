@@ -29,4 +29,14 @@ And then you initialize the script.
 
 There you go. All done.
 
+
+If you want to limit the maximum amount of tags, that can be added, specify the maximum
+amount as data attribute.
+
+.. code-block:: html
+
+    <!-- this input will only take 3 tags -->
+    <input type="text" data-max-tags="3" id="taginput" value="">
+
+
 The value of the input will be all tags separated by comma. E.g. ``Foo,Bar``.

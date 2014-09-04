@@ -1,5 +1,5 @@
 /*
- * jQuery Typeahead Tagging v0.1.1
+ * jQuery Typeahead Tagging v0.2
  *
  * A jQuery plugin to allow managing tags with typeahead autocompletion.
  *
@@ -30,6 +30,7 @@
 
         $.tagging.current_taglist = [];
         $.tagging.original_input = this;
+        $.tagging.max_tags = parseInt($(this).attr('data-max-tags'));
 
         // hide the original input
         $.tagging.original_input.hide();
@@ -50,9 +51,14 @@
         // create a new tag from the input's value and insert it before the
         // input's parent li
         var $new_tag = $.tagging.$TAGGING_TAG.clone()
-          , value = $input.val().replace($.tagging.CLEANING_PATTERN, '').trim();
+          , value = $input.val().replace($.tagging.CLEANING_PATTERN, '').trim()
+          , limit_exceeded = false;
 
-        if (value) {
+        if ($.tagging.max_tags && $.tagging.max_tags <= $.tagging.current_taglist.length) {
+            limit_exceeded = true;
+        }
+
+        if (value && !limit_exceeded) {
             $new_tag.html(value + $.tagging.TAG_DELETE);
             $new_tag.insertBefore($input.parents('li'));
             $.tagging.current_taglist.push(value);
