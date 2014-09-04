@@ -1,0 +1,12 @@
+=== ongoing ===
+
+- preventing empty tags from pressing comma or enter
+- fixed copy paste error
+
+=== 0.1.1 ===
+
+- added missing dropdown styles
+
+=== 0.1 ===
+
+Initial commit

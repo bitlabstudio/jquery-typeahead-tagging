@@ -52,10 +52,11 @@
         var $new_tag = $.tagging.$TAGGING_TAG.clone()
           , value = $input.val().replace($.tagging.CLEANING_PATTERN, '').trim();
 
-        $new_tag.html(value + $.tagging.TAG_DELETE);
-        $new_tag.insertBefore($input.parents('li'));
-        $.tagging.current_taglist.push(value);
-
+        if (value) {
+            $new_tag.html(value + $.tagging.TAG_DELETE);
+            $new_tag.insertBefore($input.parents('li'));
+            $.tagging.current_taglist.push(value);
+        }
         sync_input();
     }
 
