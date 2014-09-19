@@ -45,6 +45,7 @@ ul.tagging_ul li.tagging_new {
 }
 ul.tagging_ul li.tagging_new input.tagging_new_input {
   border: none;
+  outline: none;
   box-shadow: none;
   display: inline;
   height: inherit;
