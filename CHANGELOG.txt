@@ -1,6 +1,7 @@
 === ongoing ===
 
 
+- removed outline from input
 - Fixed compatibility issue with Firefox
 
 === 0.2. ===

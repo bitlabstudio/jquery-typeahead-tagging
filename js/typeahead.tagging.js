@@ -1,5 +1,5 @@
 /*
- * jQuery Typeahead Tagging v0.2
+ * jQuery Typeahead Tagging v0.2.1
  *
  * A jQuery plugin to allow managing tags with typeahead autocompletion.
  *
