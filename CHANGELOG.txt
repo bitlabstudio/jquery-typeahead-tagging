@@ -1,6 +1,8 @@
 === ongoing ===
 
 
+- Fixed compatibility issue with Firefox
+
 === 0.2. ===
 
 - allowing to limit maximum tags

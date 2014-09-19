@@ -169,10 +169,10 @@
     });
 
     // key events for the new tag input
-    $(document).on('keypress', 'input.tagging_new_input', function(e) {
+    $(document).on('keydown', 'input.tagging_new_input', function(e) {
         // on hitting enter or comma inside the new input, create a new tag
         // from the current input value
-        if (e.keyCode === 13 || e.key === ',') {
+        if (e.keyCode === 13 || e.keyCode === 188) {
             if ($(this).val()) {
                 e.preventDefault();
                 add_tag($(this));
