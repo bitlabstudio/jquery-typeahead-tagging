@@ -104,7 +104,7 @@
         // removes a tag and updates the hidden input
         var removed_tag = $tagging_tag.clone().children().remove().end().text()
           , tag_index = $.tagging.current_taglist.indexOf(removed_tag);
-        $.tagging.current_taglist.pop(tag_index);
+        $.tagging.current_taglist.splice(tag_index,1);
         $tagging_tag.remove();
 
         sync_input();
