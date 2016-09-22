@@ -23,61 +23,66 @@
     // Plugin Methods =========================================================
     $.fn.tagging = function(tagsource) {
 
-        // variable definition
-        var $tagging_ul = $('<ul class="tagging_ul"></ul>'),
-            $tagging_new = globals.$TAGGING_NEW.clone(),
-            $tagging_new_input = $tagging_new.find('.tagging_new_input'),
-            datasetname = 'tagging',
-            original_input = $(this);
+        // plugin code
+        $(this).each(function(){
 
-        // Item data
-        original_input.taglist = [];
+            // variable definition
+            var $tagging_ul = $('<ul class="tagging_ul"></ul>'),
+                $tagging_new = globals.$TAGGING_NEW.clone(),
+                $tagging_new_input = $tagging_new.find('.tagging_new_input'),
+                datasetname = 'tagging',
+                original_input = $(this);
 
-        // hide the original input
-        original_input.hide();
+            // Item data
+            original_input.taglist = [];
 
-        // split initial input value and put each in one li
-        // ul styled like an input. li has tag style.
-        $tagging_ul = append_ul(original_input, $tagging_ul, $tagging_new);
+            // hide the original input
+            original_input.hide();
 
-        // append another li with an input for new tags
-        append_new($tagging_ul, $tagging_new, tagsource, datasetname);
+            // split initial input value and put each in one li
+            // ul styled like an input. li has tag style.
+            $tagging_ul = append_ul(original_input, $tagging_ul, $tagging_new);
+
+            // append another li with an input for new tags
+            append_new($tagging_ul, $tagging_new, tagsource, datasetname);
 
 
-        // Events =================================================================
-        // Tag Input events
-        $tagging_new_input.on('keydown', function(e) {
+            // Events =================================================================
+            // Tag Input events
+            $tagging_new_input.on('keydown', function(e) {
 
-            if (e.keyCode === 13 || e.keyCode === 188) {
-                if ($(this).val()) {
-                    e.preventDefault();
-                    add_tag( $(this), original_input );
-                    $(this).typeahead('val', '');
-                    $(this).typeahead('close');
-                }
-            }
-            // if pressing backspace in an empty input, remove previous tag
-            if (e.keyCode === 8) {
-                if (this.selectionStart === 0 && this.selectionEnd === 0) {
-                    (function($this) {
-                        var $tagging_tag = $this.parents('ul').find('li.tagging_tag').last();
+                if (e.keyCode === 13 || e.keyCode === 188) {
+                    if ($(this).val()) {
                         e.preventDefault();
-                        delete_tag($tagging_tag, original_input);
-                    })($(this));
+                        add_tag( $(this), original_input );
+                        $(this).typeahead('val', '');
+                        $(this).typeahead('close');
+                    }
                 }
-            }
+                // if pressing backspace in an empty input, remove previous tag
+                if (e.keyCode === 8) {
+                    if (this.selectionStart === 0 && this.selectionEnd === 0) {
+                        (function($this) {
+                            var $tagging_tag = $this.parents('ul').find('li.tagging_tag').last();
+                            e.preventDefault();
+                            delete_tag($tagging_tag, original_input);
+                        })($(this));
+                    }
+                }
 
-        });
+            });
 
-        // when clicking x inside taglike li remove tag
-        $tagging_ul.find('.tag_delete').on('click', function() {
-            delete_tag( $(this).parent(), original_input );
-        });
+            // when clicking x inside taglike li remove tag
+            $tagging_ul.find('.tag_delete').on('click', function() {
+                delete_tag( $(this).parent(), original_input );
+            });
 
-        // focus the input for new tags when clicking the ul looking like an input
-        $tagging_ul.on('click', function(e) {
-            e.preventDefault();
-            $tagging_new_input.focus();
+            // focus the input for new tags when clicking the ul looking like an input
+            $tagging_ul.on('click', function(e) {
+                e.preventDefault();
+                $tagging_new_input.focus();
+            });
+
         });
 
         return this;
