@@ -85,7 +85,8 @@
 
         });
 
-        return this;
+        // Keep the chain
+        return $(this);
     };
 
 
@@ -106,8 +107,15 @@
             $new_tag.html(value + globals.TAG_DELETE);
             $new_tag.insertBefore($input.parents('li'));
             original_input.taglist.push(value);
+
+            // Add the delete event to the new tag
+            $new_tag.find('.tag_delete').on('click', function() {
+                delete_tag( $(this).parent(), original_input );
+            });
         }
+
         sync_input( original_input );
+
     }
 
     function append_new($element, $tagging_new, tagsource, datasetname) {
