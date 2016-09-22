@@ -24,9 +24,11 @@
     $.fn.tagging = function(tagsource) {
 
         // variable definition
-        var $tagging_ul = $('<ul class="tagging_ul"></ul>')
-          , $tagging_new = globals.$TAGGING_NEW.clone()
-          , datasetname = 'tagging';
+        var $tagging_ul = $('<ul class="tagging_ul"></ul>'),
+            $tagging_new = globals.$TAGGING_NEW.clone(),
+            $tagging_new_input = $tagging_new.find('.tagging_new_input'),
+            datasetname = 'tagging',
+            original_input = $(this);
 
         globals.current_taglist = [];
         globals.original_input = this;
