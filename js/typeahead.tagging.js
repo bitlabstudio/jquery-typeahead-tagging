@@ -12,7 +12,7 @@
  */
 (function( $ ) {
 
-    $.tagging = {
+    var globals = {
         $TAGGING_TAG: $('<li class="tagging_tag"></li>')
         , TAG_DELETE: '<span class="tag_delete">x</span>'
         , $TAGGING_NEW: $(
@@ -25,15 +25,15 @@
 
         // variable definition
         var $tagging_ul = $('<ul class="tagging_ul"></ul>')
-          , $tagging_new = $.tagging.$TAGGING_NEW.clone()
+          , $tagging_new = globals.$TAGGING_NEW.clone()
           , datasetname = 'tagging';
 
-        $.tagging.current_taglist = [];
-        $.tagging.original_input = this;
-        $.tagging.max_tags = parseInt($(this).attr('data-max-tags'));
+        globals.current_taglist = [];
+        globals.original_input = this;
+        globals.max_tags = parseInt($(this).attr('data-max-tags'));
 
         // hide the original input
-        $.tagging.original_input.hide();
+        globals.original_input.hide();
 
         // split initial input value and put each in one li
         // ul styled like an input. li has tag style.
@@ -50,18 +50,18 @@
     function add_tag($input) {
         // create a new tag from the input's value and insert it before the
         // input's parent li
-        var $new_tag = $.tagging.$TAGGING_TAG.clone()
-          , value = $input.val().replace($.tagging.CLEANING_PATTERN, '').trim()
+        var $new_tag = globals.$TAGGING_TAG.clone()
+          , value = $input.val().replace(globals.CLEANING_PATTERN, '').trim()
           , limit_exceeded = false;
 
-        if ($.tagging.max_tags && $.tagging.max_tags <= $.tagging.current_taglist.length) {
+        if (globals.max_tags && globals.max_tags <= globals.current_taglist.length) {
             limit_exceeded = true;
         }
 
         if (value && !limit_exceeded) {
-            $new_tag.html(value + $.tagging.TAG_DELETE);
+            $new_tag.html(value + globals.TAG_DELETE);
             $new_tag.insertBefore($input.parents('li'));
-            $.tagging.current_taglist.push(value);
+            globals.current_taglist.push(value);
         }
         sync_input();
     }
@@ -86,11 +86,11 @@
         }
         // fill the ul with li containing the tag names
         for (var i=0; i<tags.length; i++) {
-            $tagging_tag = $.tagging.$TAGGING_TAG.clone();
-            value = tags[i].replace($.tagging.CLEANING_PATTERN, '').trim();
-            $tagging_tag.html(value + $.tagging.TAG_DELETE);
+            $tagging_tag = globals.$TAGGING_TAG.clone();
+            value = tags[i].replace(globals.CLEANING_PATTERN, '').trim();
+            $tagging_tag.html(value + globals.TAG_DELETE);
             $tagging_ul.append($tagging_tag);
-            $.tagging.current_taglist.push(value);
+            globals.current_taglist.push(value);
         }
 
         // append the new li with the input
@@ -103,8 +103,8 @@
     function delete_tag($tagging_tag) {
         // removes a tag and updates the hidden input
         var removed_tag = $tagging_tag.clone().children().remove().end().text()
-          , tag_index = $.tagging.current_taglist.indexOf(removed_tag);
-        $.tagging.current_taglist.splice(tag_index,1);
+          , tag_index = globals.current_taglist.indexOf(removed_tag);
+        globals.current_taglist.splice(tag_index,1);
         $tagging_tag.remove();
 
         sync_input();
@@ -152,7 +152,7 @@
     function sync_input() {
         // updates the hidden input from the current taglist
 
-        $.tagging.original_input.val($.tagging.current_taglist.join(','));
+        globals.original_input.val(globals.current_taglist.join(','));
     }
 
     // Events =================================================================
