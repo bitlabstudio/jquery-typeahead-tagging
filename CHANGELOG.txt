@@ -1,10 +1,16 @@
 === ongoing ===
 
+=== 0.3 ===
+
+- major refactoring
+- allowing to create multiple instances per page
+
+=== 0.2.1 ===
 
 - removed outline from input
 - Fixed compatibility issue with Firefox
 
-=== 0.2. ===
+=== 0.2 ===
 
 - allowing to limit maximum tags
 - preventing empty tags from pressing comma or enter
