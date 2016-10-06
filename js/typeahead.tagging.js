@@ -12,7 +12,7 @@
  */
 (function( $ ) {
 
-    $.tagging = {
+    var globals = {
         $TAGGING_TAG: $('<li class="tagging_tag"></li>')
         , TAG_DELETE: '<span class="tag_delete">x</span>'
         , $TAGGING_NEW: $(
@@ -23,47 +23,99 @@
     // Plugin Methods =========================================================
     $.fn.tagging = function(tagsource) {
 
-        // variable definition
-        var $tagging_ul = $('<ul class="tagging_ul"></ul>')
-          , $tagging_new = $.tagging.$TAGGING_NEW.clone()
-          , datasetname = 'tagging';
+        // plugin code
+        $(this).each(function(){
 
-        $.tagging.current_taglist = [];
-        $.tagging.original_input = this;
-        $.tagging.max_tags = parseInt($(this).attr('data-max-tags'));
+            // variable definition
+            var $tagging_ul = $('<ul class="tagging_ul"></ul>'),
+                $tagging_new = globals.$TAGGING_NEW.clone(),
+                $tagging_new_input = $tagging_new.find('.tagging_new_input'),
+                datasetname = 'tagging',
+                original_input = $(this);
 
-        // hide the original input
-        $.tagging.original_input.hide();
+            // Item data
+            original_input.taglist = [];
 
-        // split initial input value and put each in one li
-        // ul styled like an input. li has tag style.
-        $tagging_ul = append_ul(this, $tagging_ul, $tagging_new);
+            // hide the original input
+            original_input.hide();
 
-        // append another li with an input for new tags
-        append_new($tagging_ul, $tagging_new, tagsource, datasetname);
+            // split initial input value and put each in one li
+            // ul styled like an input. li has tag style.
+            $tagging_ul = append_ul(original_input, $tagging_ul, $tagging_new);
 
-        return this;
+            // append another li with an input for new tags
+            append_new($tagging_ul, $tagging_new, tagsource, datasetname);
+
+
+            // Events =================================================================
+            // Tag Input events
+            $tagging_new_input.on('keydown', function(e) {
+
+                if (e.keyCode === 13 || e.keyCode === 188) {
+                    if ($(this).val()) {
+                        e.preventDefault();
+                        add_tag( $(this), original_input );
+                        $(this).typeahead('val', '');
+                        $(this).typeahead('close');
+                    }
+                }
+                // if pressing backspace in an empty input, remove previous tag
+                if (e.keyCode === 8) {
+                    if (this.selectionStart === 0 && this.selectionEnd === 0) {
+                        (function($this) {
+                            var $tagging_tag = $this.parents('ul').find('li.tagging_tag').last();
+                            e.preventDefault();
+                            delete_tag($tagging_tag, original_input);
+                        })($(this));
+                    }
+                }
+
+            });
+
+            // when clicking x inside taglike li remove tag
+            $tagging_ul.find('.tag_delete').on('click', function() {
+                delete_tag( $(this).parent(), original_input );
+            });
+
+            // focus the input for new tags when clicking the ul looking like an input
+            $tagging_ul.on('click', function(e) {
+                e.preventDefault();
+                $tagging_new_input.focus();
+            });
+
+        });
+
+        // Keep the chain
+        return $(this);
     };
 
 
     // Private Function Definition ============================================
-    function add_tag($input) {
+    function add_tag( $input, original_input ){
+
         // create a new tag from the input's value and insert it before the
         // input's parent li
-        var $new_tag = $.tagging.$TAGGING_TAG.clone()
-          , value = $input.val().replace($.tagging.CLEANING_PATTERN, '').trim()
+        var $new_tag = globals.$TAGGING_TAG.clone()
+          , value = $input.val().replace(globals.CLEANING_PATTERN, '').trim()
           , limit_exceeded = false;
 
-        if ($.tagging.max_tags && $.tagging.max_tags <= $.tagging.current_taglist.length) {
+        if (original_input.data('max-tags') && original_input.data('max-tags') <= original_input.taglist.length) {
             limit_exceeded = true;
         }
 
         if (value && !limit_exceeded) {
-            $new_tag.html(value + $.tagging.TAG_DELETE);
+            $new_tag.html(value + globals.TAG_DELETE);
             $new_tag.insertBefore($input.parents('li'));
-            $.tagging.current_taglist.push(value);
+            original_input.taglist.push(value);
+
+            // Add the delete event to the new tag
+            $new_tag.find('.tag_delete').on('click', function() {
+                delete_tag( $(this).parent(), original_input );
+            });
         }
-        sync_input();
+
+        sync_input( original_input );
+
     }
 
     function append_new($element, $tagging_new, tagsource, datasetname) {
@@ -71,8 +123,7 @@
         // tags
         $element.append($tagging_new);
         // init typeahead
-        init_typeahead($element.find('input.tagging_new_input'), tagsource,
-                       datasetname);
+        init_typeahead($element.find('input.tagging_new_input'), tagsource, datasetname);
     }
 
     function append_ul($input, $tagging_ul, $tagging_new) {
@@ -86,11 +137,11 @@
         }
         // fill the ul with li containing the tag names
         for (var i=0; i<tags.length; i++) {
-            $tagging_tag = $.tagging.$TAGGING_TAG.clone();
-            value = tags[i].replace($.tagging.CLEANING_PATTERN, '').trim();
-            $tagging_tag.html(value + $.tagging.TAG_DELETE);
+            $tagging_tag = globals.$TAGGING_TAG.clone();
+            value = tags[i].replace(globals.CLEANING_PATTERN, '').trim();
+            $tagging_tag.html(value + globals.TAG_DELETE);
             $tagging_ul.append($tagging_tag);
-            $.tagging.current_taglist.push(value);
+            $input.taglist.push(value);
         }
 
         // append the new li with the input
@@ -100,14 +151,15 @@
         return $tagging_ul;
     }
 
-    function delete_tag($tagging_tag) {
+    function delete_tag($tagging_tag, original_input) {
         // removes a tag and updates the hidden input
-        var removed_tag = $tagging_tag.clone().children().remove().end().text()
-          , tag_index = $.tagging.current_taglist.indexOf(removed_tag);
-        $.tagging.current_taglist.splice(tag_index,1);
+        var removed_tag = $tagging_tag.clone().children().remove().end().text(),
+            tag_index = original_input.taglist.indexOf(removed_tag);
+
+        original_input.taglist.splice(tag_index, 1);
         $tagging_tag.remove();
 
-        sync_input();
+        sync_input( original_input );
     }
 
     function init_typeahead($input, tagsource, datasetname) {
@@ -149,47 +201,11 @@
         }
     }
 
-    function sync_input() {
+    function sync_input( original_input ) {
+
         // updates the hidden input from the current taglist
+        original_input.val(original_input.taglist.join(','));
 
-        $.tagging.original_input.val($.tagging.current_taglist.join(','));
     }
-
-    // Events =================================================================
-
-    // when clicking x inside taglike li remove tag
-    $(document).on('click', '.tag_delete', function() {
-        delete_tag($(this).parent());
-    });
-
-    // focus the input for new tags when clicking the ul looking like an input
-    $(document).on('click', 'ul.tagging_ul', function(e) {
-        e.preventDefault();
-        $(this).find('input.tagging_new_input').focus();
-    });
-
-    // key events for the new tag input
-    $(document).on('keydown', 'input.tagging_new_input', function(e) {
-        // on hitting enter or comma inside the new input, create a new tag
-        // from the current input value
-        if (e.keyCode === 13 || e.keyCode === 188) {
-            if ($(this).val()) {
-                e.preventDefault();
-                add_tag($(this));
-                $(this).typeahead('val', '');
-                $(this).typeahead('close');
-            }
-        }
-        // if pressing backspace in an empty input, remove previous tag
-        if (e.keyCode === 8) {
-            if (this.selectionStart === 0 && this.selectionEnd === 0) {
-                (function($this) {
-                    var $tagging_tag = $this.parents('ul').find('li.tagging_tag').last();
-                    e.preventDefault();
-                    delete_tag($tagging_tag);
-                })($(this));
-            }
-        }
-    });
 
 }( jQuery ));
