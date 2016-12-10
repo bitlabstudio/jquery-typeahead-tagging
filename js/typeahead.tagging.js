@@ -6,7 +6,6 @@
  * Latest source at https://github.com/bitmazk/jquery-typeahead-tagging
  *
  * Current issues/TODO:
- *  - prevent already added tags from showing up in the autocomplete results
  *  - prevent umlauts from being cleaned out
  *
  */
@@ -32,6 +31,9 @@
                 $tagging_new_input = $tagging_new.find('.tagging_new_input'),
                 datasetname = 'tagging',
                 original_input = $(this);
+
+            // Save the original input element in the global variable
+            globals.$ELEMENT = original_input;
 
             // Item data
             original_input.taglist = [];
@@ -69,7 +71,6 @@
                         })($(this));
                     }
                 }
-
             });
 
             // when clicking x inside taglike li remove tag
@@ -179,7 +180,14 @@
                     // that contains the substring `q`, add it to the `matches`
                     // array
                     $.each(tagsource, function(i, str) {
-                        if (substrRegex.test(str)) {
+                        var alreadyAdded = false;
+                        for (var i = globals.$ELEMENT.taglist.length - 1; i >= 0; i--) {
+                            if (globals.$ELEMENT.taglist[i] === str) {
+                                alreadyAdded = true;
+                            }
+                        }
+
+                        if (substrRegex.test(str) && alreadyAdded === false) {
                             matches.push({ value: str });
                         }
                     });
